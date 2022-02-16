@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 /*
 Instructions: Given a Roman numeral string, return the integer.
@@ -20,34 +20,82 @@ C can be placed before D (500) and M (1000) to make 400 and 900.
 */
 
 const RomanNumerals = () => {
+  const hash = {
+    I: 1,
+    V: 5,
+    X: 10,
+    L: 50,
+    C: 100,
+    D: 500,
+    M: 1000,
+  };
 
-  const romanToInt = str => {
-    return 3
-  }
+  const romanToInt = (str) => {
+    const stringArray = str.split("");
+
+    let skipNext = false;
+
+    const integer = stringArray.reduce((accumulator, current, index) => {
+      if (skipNext) {
+        skipNext = false;
+        return accumulator;
+      }
+      if (current === "I" && stringArray[index + 1] === "V") {
+        skipNext = true;
+        return (accumulator += 4);
+      }
+      if (current === "I" && stringArray[index + 1] === "X") {
+        skipNext = true;
+        return (accumulator += 9);
+      }
+      if (current === "X" && stringArray[index + 1] === "L") {
+        skipNext = true;
+        return (accumulator += 40);
+      }
+      if (current === "X" && stringArray[index + 1] === "C") {
+        skipNext = true;
+        return (accumulator += 90);
+      }
+      if (current === "C" && stringArray[index + 1] === "D") {
+        skipNext = true;
+        return (accumulator += 400);
+      }
+      if (current === "C" && stringArray[index + 1] === "M") {
+        skipNext = true;
+        return (accumulator += 900);
+      } else {
+        return (accumulator += hash[current]);
+      }
+    }, 0);
+
+    return isNaN(integer) ? "invalid string" : integer;
+  };
 
   // Test cases
   const testCases = [
-    { caseNumber: 1, romanNumeral: 'III', expectedAnswer: 3 },
-    { caseNumber: 2, romanNumeral: 'IV', expectedAnswer: 4 },
-    { caseNumber: 3, romanNumeral: 'IX', expectedAnswer: 9 },
-    { caseNumber: 4, romanNumeral: 'LVIII', expectedAnswer: 58 },
-    { caseNumber: 5, romanNumeral: 'MCMXCIV', expectedAnswer: 1994 },
-    { caseNumber: 6, romanNumeral: 'LVIIN', expectedAnswer: 'invalid string' },
+    { caseNumber: 1, romanNumeral: "III", expectedAnswer: 3 },
+    { caseNumber: 2, romanNumeral: "IV", expectedAnswer: 4 },
+    { caseNumber: 3, romanNumeral: "IX", expectedAnswer: 9 },
+    { caseNumber: 4, romanNumeral: "LVIII", expectedAnswer: 58 },
+    { caseNumber: 5, romanNumeral: "MCMXCIV", expectedAnswer: 1994 },
+    { caseNumber: 6, romanNumeral: "LVIIN", expectedAnswer: "invalid string" },
   ];
 
-  const results = testCases.map(testCase => {
-    const {caseNumber, romanNumeral, expectedAnswer} = testCase;
+  const results = testCases.map((testCase) => {
+    const { caseNumber, romanNumeral, expectedAnswer } = testCase;
     const error = `☹️"${romanNumeral}" should return ${expectedAnswer}`;
     const success = `😻 Case ${caseNumber} passed!`;
     return romanToInt(romanNumeral) === expectedAnswer ? success : error;
-  })
+  });
 
   return (
     <>
       <h2>Test Results</h2>
-      {results.map((result, index) => <div key={index}>{result}</div>)}
+      {results.map((result, index) => (
+        <div key={index}>{result}</div>
+      ))}
     </>
-  )
-}
+  );
+};
 
-export default RomanNumerals
+export default RomanNumerals;
