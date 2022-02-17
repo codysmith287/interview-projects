@@ -63,9 +63,8 @@ const RomanNumerals = () => {
       if (current === "C" && stringArray[index + 1] === "M") {
         skipNext = true;
         return (accumulator += 900);
-      } else {
-        return (accumulator += hash[current]);
-      }
+      } 
+      return (accumulator += hash[current]);
     }, 0);
 
     return isNaN(integer) ? "invalid string" : integer;
